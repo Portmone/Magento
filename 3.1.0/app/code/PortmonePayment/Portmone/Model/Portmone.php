@@ -127,7 +127,6 @@ class Portmone extends AbstractMethod
         $strToSignature = strtoupper($strToSignature) . strtoupper(bin2hex($this->getConfigData('secret_key')));
         $FormData['signature'] = strtoupper(hash_hmac('sha256', $strToSignature, $this->getConfigData('user_key')));
 
-
         return $FormData;
     }
 
@@ -148,7 +147,6 @@ class Portmone extends AbstractMethod
             ];
         }
 
-
         $data = [
             "method" => "result",
             "payee_id" => $this->getConfigData('payee_id'),
@@ -161,9 +159,9 @@ class Portmone extends AbstractMethod
         $parseXml = $this->parseXml($result);
 
         if ($parseXml === false) {
-            if ($_REQUEST['RESULT'] == '0') {
+            if ($post->RESULT == '0') {
                 return [
-                    'status' => 'PORTMONE_PAID_BUT_NOT_VERIFIED',
+                    'status' => 'PAYED',
                     'message' => 'Дякуємо за покупку'
                 ];
             } else {
@@ -198,6 +196,7 @@ class Portmone extends AbstractMethod
                 'message' => 'У системі Portmone цього платежу немає, він повернутий або створений некоректно'
             ];
         } elseif (count($parseXml->orders->order) > 1) {
+
             $isPay = false;
             foreach ($parseXml->orders->order as $order) {
                 $status = (array)$order->status;
@@ -214,7 +213,7 @@ class Portmone extends AbstractMethod
                 ];
             } else {
                 return [
-                    'status' => 'PORTMONE_PAID',
+                    'status' => 'PAYED',
                     'message' => 'Дякуємо за покупку'
                 ];
             }

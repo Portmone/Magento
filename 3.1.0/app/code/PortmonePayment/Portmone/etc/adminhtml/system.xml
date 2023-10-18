@@ -18,19 +18,25 @@
                     <label>Назва способу оплати</label>
                 </field>
                 <field id="payee_id" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0" >
-                    <label>Ідентифікатор магазину в системі Portmone(Payee ID)</label>
+                    <label>Ідентифікатор магазину в системі Portmone(Payee ID) *</label>
+                    <validate>required-entry</validate>
                 </field>
                 <field id="secret_key" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0" >
-                    <label>Логін Інтернет-магазину в системі Portmone</label>
+                    <label>Логін Інтернет-магазину в системі Portmone *</label>
+                    <validate>required-entry</validate>
                 </field>
-                <field id="test_key" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0" >
-                    <label>Пароль Інтернет-магазину в системі Portmone</label>
+                <field id="test_key" translate="label" type="password" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0" >
+                    <label>Пароль Інтернет-магазину в системі Portmone *</label>
+                    <validate>required-entry</validate>
                 </field>
                 <field id="user_key" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0" >
-                    <label>Ключ компании, предоставленный менеджером Portmone</label>
+                    <label>Ключ компанії, наданий менеджером Portmone.com *</label>
+                    <validate>required-entry</validate>
                 </field>
                 <field id="exp_time" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0" >
                     <label>Обмеження часу життя рахунки на оплату</label>
+                    <validate>validate-number</validate>
+                    <comment>Встановлює інтервал, протягом якого замовлення може бути оплачене. Заповнюється в секундах</comment>
                 </field>
             </group>
         </section>

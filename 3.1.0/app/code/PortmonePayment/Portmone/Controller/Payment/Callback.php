@@ -28,6 +28,7 @@ class Callback extends Action implements CsrfAwareActionInterface
         $resultRedirect = $this->resultRedirectFactory->create();
         $resultRedirect->setPath('checkout/onepage/success');
         $post = $this->request->getPost();
+
         if (empty($post)) {
             $this->messageManager->addErrorMessage(__('Немає інформації про платіж'));
             return $resultRedirect;
