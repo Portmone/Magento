@@ -1,8 +1,8 @@
-# Плагін Portmone.com для Magento-3.1.0
+# Плагін Portmone.com для Magento-2.4.6
 
 Creator: Portmone.com   
 Tags: Portmone, Magento, payment, payment gateway, credit card, debit card    
-Requires at least: Magento-3.1.0    
+Requires at least: Magento-2.4.6    
 License: Payment Card Industry Data Security Standard (PCI DSS) 
 License URI: [License](https://www.portmone.com.ua/r3/uk/security/) 
 
