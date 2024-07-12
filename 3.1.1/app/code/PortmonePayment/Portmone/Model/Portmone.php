@@ -2,13 +2,9 @@
 
 namespace PortmonePayment\Portmone\Model;
 
-use Laminas\Stdlib\ParametersInterface;
-use Magento\Framework\Controller\Result\RedirectFactory;
-use Magento\Quote\Api\Data\CartInterface;
 use Magento\Payment\Model\Method\AbstractMethod;
 use Magento\Sales\Model\Order;
 use mysql_xdevapi\TableUpdate;
-
 
 class Portmone extends AbstractMethod
 {
@@ -138,7 +134,7 @@ class Portmone extends AbstractMethod
     /**
      * @return array|string[]|void
      */
-    public function isPaymentValid(ParametersInterface $post)
+    public function isPaymentValid($post)
     {
         if (empty($post->SHOPORDERNUMBER)) {
             return [

@@ -2,7 +2,6 @@
 
 namespace PortmonePayment\Portmone\Controller\Payment;
 
-
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\CsrfAwareActionInterface;
@@ -15,7 +14,7 @@ class Callback extends Action implements CsrfAwareActionInterface
     protected $resultRedirect;
     protected $request;
 
-    public function __construct(Context $context, Http $request,)
+    public function __construct(Context $context, Http $request)
     {
         parent::__construct($context);
         $this->resultRedirect = $context->getResultFactory();

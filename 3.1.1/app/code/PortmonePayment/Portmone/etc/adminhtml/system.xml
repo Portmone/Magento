@@ -7,7 +7,6 @@
                 <comment><![CDATA[Сервіс проведення платежів забезпечується системою Portmone.com із використанням сучасного та безпечного механізму авторизації платіжних карток. Служба підтримки Portmone.com: телефон +380(44)200 09 02, електронна пошта: support@portmone.com]]></comment>
                 <attribute type="expanded">1</attribute>
                 <fieldset_css>complex portmone-section</fieldset_css>
-                <frontend_model></frontend_model>
                 <attribute type="activity_path">payment/braintree/active</attribute>
                 <attribute type="displayIn">recommended_solutions</attribute>
                 <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
