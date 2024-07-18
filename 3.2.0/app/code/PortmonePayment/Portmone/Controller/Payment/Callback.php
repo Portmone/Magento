@@ -41,7 +41,7 @@ class Callback extends Action implements CsrfAwareActionInterface
             $this->messageManager->addErrorMessage(__($paymentInfo['message']));
         }
 
-        if ($paymentInfo['status'] == 'PAYED') {
+        if ($paymentInfo['status'] == 'PAYED' || $paymentInfo['status'] == 'PREAUTH') {
             $this->messageManager->addSuccessMessage(__($paymentInfo['message']));
         }
 
