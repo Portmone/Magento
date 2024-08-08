@@ -37,6 +37,11 @@
                     <validate>validate-number</validate>
                     <comment>Встановлює інтервал, протягом якого замовлення може бути оплачене. Заповнюється в секундах</comment>
                 </field>
+                <field id="preauth_flag" translate="label" type="select" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Режим преавторизації</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Ознака преавторизації платежу (значення "Yes" вказує на те, що ця оплата здійснюється з використанням процедури преавторизації, значення "No" – звичайна оплата без преавторизації). Попередня авторизація (преавторизація) – блокування коштів на Картці користувача без фактичного фінансового списання коштів з рахунку Клієнта.</comment>
+                </field>
             </group>
         </section>
     </system>
