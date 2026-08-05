@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../Store/etc/config.xsd">
+    <default>
+        <payment>
+            <portmone>
+                <active>0</active>
+                <title>Portmone</title>
+                <pass_word_1 backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <pass_word_2 backend_model="Magento\Config\Model\Config\Backend\Encrypted" />
+                <order_status>pending_payment</order_status>
+                <instructions>Pay via Portmone</instructions>
+                <payment_action>true</payment_action>
+                <test>1</test>
+                <model>PortmonePayment\Portmone\Model\Portmone</model>
+                <group>offline</group>
+                <action_url>https://www.portmone.com.ua/gateway/</action_url>
+            </portmone>
+        </payment>
+    </default>
+</config>
