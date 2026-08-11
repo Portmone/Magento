@@ -1,0 +1,2 @@
+"Компанія-отримувач","Recipient company"
+"Ідентифікатор компанії Portmone, на яку надходить оплата за цей товар. Якщо не заповнено, оплата надходить на основну компанію.","Portmone company identifier that receives payment for this product. If not specified, payment is sent to the main company."
