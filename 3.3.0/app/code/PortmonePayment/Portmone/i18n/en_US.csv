@@ -70,4 +70,5 @@
 "Розподіляє суму замовлення між компаніями-отримувачами, вказаними в картках товарів.","Distributes the order amount between the recipient companies specified in the product cards."
 "Основні налаштування","Basic settings"
 "Спосіб відображення платіжної форми","Payment form display method"
-
+"Опис платежу","Order description"
+"Опис платежу (призначення оплати). Максимальна кількість символів — 250. Якщо вказати %order_number, його буде замінено на реальний номер замовлення.","Payment description (payment purpose). Maximum number of characters is 250. If you specify %order_number, it will be replaced with the actual order number."
