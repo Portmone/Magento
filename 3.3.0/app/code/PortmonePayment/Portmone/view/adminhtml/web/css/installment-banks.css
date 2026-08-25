@@ -1,0 +1,48 @@
+.portmone-installment-banks {
+    padding-top: 3px;
+}
+
+.portmone-installment-bank {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+}
+
+.portmone-installment-bank__label {
+    width: 90px;
+    padding-right: 10px;
+}
+
+.portmone-installment-bank__term {
+    display: flex;
+    align-items: center;
+    width: 340px;
+}
+
+.portmone-installment-bank__term .input-text {
+    width: 300px;
+}
+
+.portmone-installment-bank__checkbox {
+    width: 40px;
+    padding-left: 10px;
+}
+
+.portmone-installment-bank__checkbox input[type="checkbox"] {
+    margin: 0;
+}
+
+.portmone-installment-banks__tooltip,
+.portmone-installment-bank__tooltip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    margin-left: 8px;
+    border: 1px solid #999;
+    border-radius: 50%;
+    font-size: 12px;
+    line-height: 18px;
+    cursor: help;
+}

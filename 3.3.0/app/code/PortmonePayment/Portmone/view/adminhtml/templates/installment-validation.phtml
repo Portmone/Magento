@@ -1,0 +1,14 @@
+<?php
+$config = [
+        'requiredMessage' => __('Це поле є обов’язковим, якщо увімкнено розтермінування.'),
+        'emptyMessage' => __('Це поле має бути порожнім, якщо увімкнено розтермінування.')
+];
+?>
+
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "PortmonePayment_Portmone/js/installment-validation": <?= /* @noEscape */ json_encode($config) ?>
+    }
+}
+</script>

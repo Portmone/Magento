@@ -1,0 +1,22 @@
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "PortmonePayment_Portmone/js/payment-mode": {
+                "comments": {
+                    "redirect": <?= /* @noEscape */
+    json_encode(
+            (string)__(
+                    'Redirect to Portmone: The customer is redirected to the Portmone payment page and returns to the website after payment. Google Pay and Apple Pay work without additional configuration.'
+            )
+    ) ?>,
+                "iframe": <?= /* @noEscape */
+    json_encode(
+            (string)__(
+                    'Payment form on the website (iframe): Payment is processed in an iframe on the checkout page without redirecting to the Portmone website. To use Apple Pay, you need your own Apple Developer account, certificates, and domain verification. Instructions: <a href="https://docs.portmone.com.ua/docs/en/PaymentGatewayEng#342-payment-in-an-embedded-frame-ifram" target="_blank">Portmone documentation, section 3.4.2</a>.'
+            )
+    ) ?>
+    }
+}
+}
+}
+</script>

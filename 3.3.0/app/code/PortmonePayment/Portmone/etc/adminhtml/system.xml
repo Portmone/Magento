@@ -9,39 +9,227 @@
                 <fieldset_css>complex portmone-section</fieldset_css>
                 <attribute type="activity_path">payment/braintree/active</attribute>
                 <attribute type="displayIn">recommended_solutions</attribute>
-                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+
+                <!-- Основні налаштування -->
+                <field id="basic_settings_separator" type="label" sortOrder="1" showInDefault="1"  showInWebsite="1" showInStore="0">
+                    <frontend_model>PortmonePayment\Portmone\Block\Adminhtml\System\Config\Form\Field\Separator</frontend_model>
+                    <label>Основні налаштування</label>
+                </field>
+                <field id="active" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Включити оплату через Portmone</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="title" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="title" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Назва способу оплати</label>
                 </field>
-                <field id="payee_id" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="0" >
+                <field id="payee_id" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0" >
                     <label>Ідентифікатор магазину в системі Portmone(Payee ID) *</label>
                     <validate>required-entry</validate>
                 </field>
-                <field id="secret_key" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="0" >
+                <field id="login" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0" >
                     <label>Логін Інтернет-магазину в системі Portmone *</label>
                     <validate>required-entry</validate>
                 </field>
-                <field id="test_key" translate="label" type="password" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0" >
+                <field id="password" translate="label" type="password" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0" >
                     <label>Пароль Інтернет-магазину в системі Portmone *</label>
                     <validate>required-entry</validate>
                 </field>
-                <field id="user_key" translate="label" type="text" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="0" >
+                <field id="key" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0" >
                     <label>Ключ компанії, наданий менеджером Portmone.com *</label>
                     <validate>required-entry</validate>
                 </field>
-                <field id="exp_time" translate="label" type="text" sortOrder="7" showInDefault="1" showInWebsite="1" showInStore="0" >
+                <field id="order_description" translate="label comment" type="text" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Опис платежу</label>
+                    <validate>validate-length maximum-length-250</validate>
+                    <comment>Опис платежу (призначення оплати). Максимальна кількість символів — 250. Якщо вказати %order_number, його буде замінено на реальний номер замовлення.</comment>
+                </field>
+                <field id="exp_time" translate="label comment" type="text" sortOrder="9" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Обмеження часу життя рахунки на оплату</label>
                     <validate>validate-number</validate>
                     <comment>Встановлює інтервал, протягом якого замовлення може бути оплачене. Заповнюється в секундах</comment>
                 </field>
-                <field id="preauth_flag" translate="label" type="select" sortOrder="8" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="preauth_flag" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Режим преавторизації</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Ознака преавторизації платежу (значення "Yes" вказує на те, що ця оплата здійснюється з використанням процедури преавторизації, значення "No" – звичайна оплата без преавторизації). Попередня авторизація (преавторизація) – блокування коштів на Картці користувача без фактичного фінансового списання коштів з рахунку Клієнта.</comment>
                 </field>
+
+
+                <!-- Спосіб відображення платіжної форми -->
+                <field id="payment_display_method_separator" type="label" sortOrder="15" showInDefault="1"  showInWebsite="1" showInStore="0">
+                    <frontend_model>PortmonePayment\Portmone\Block\Adminhtml\System\Config\Form\Field\Separator</frontend_model>
+                    <label>Спосіб відображення платіжної форми</label>
+                </field>
+                <field id="payment_mode" translate="label comment" type="select" sortOrder="16" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Режим оплати</label>
+                    <source_model>PortmonePayment\Portmone\Model\Config\Source\PaymentMode</source_model>
+                    <comment>Виберіть спосіб відображення платіжної форми.</comment>
+                </field>
+                <field id="apple_merchant_name" translate="label comment" type="text" sortOrder="17" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Apple Pay - назва мерчанта (appleMerchantName)</label>
+                    <comment>Значення з вашого акаунту Apple Developer. Якщо не заповнено, кнопка Apple Pay у фреймі не відображається.</comment>
+                    <depends>
+                        <field id="payment_mode">iframe</field>
+                    </depends>
+                </field>
+                <field id="apple_merchant_label" translate="label comment" type="text" sortOrder="18" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Apple Pay - підпис мерчанта (appleMerchantLabel)</label>
+                    <comment>Назва, яку клієнт бачить у вікні підтвердження оплати Apple Pay.</comment>
+                    <depends>
+                        <field id="payment_mode">iframe</field>
+                    </depends>
+                </field>
+
+
+                <!-- Розтермінування -->
+                <field id="installment_separator" type="label" sortOrder="25" showInDefault="1"  showInWebsite="1" showInStore="0">
+                    <frontend_model>PortmonePayment\Portmone\Block\Adminhtml\System\Config\Form\Field\Separator</frontend_model>
+                    <label>Розтермінування</label>
+                </field>
+                <field id="installment" translate="label comment" type="select" sortOrder="26" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Розтермінування</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Додає в оформлення замовлення окремий спосіб оплати в розстрочку.</comment>
+                </field>
+                <field id="installment_title" translate="label comment" type="text" sortOrder="27" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Назва способу оплати для розтермінування</label>
+                    <comment>Назва, яку клієнт бачить у списку способів оплати.</comment>
+                    <depends>
+                        <field id="installment">1</field>
+                    </depends>
+                </field>
+                <field id="installment_payee_id" translate="label comment" type="text" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Ідентифікатор компанії для розтермінування (payeeId)</label>
+                    <comment>Компанія, на яку надходять платежі в розтермінування. Може відрізнятись від основної компанії мерчанта. Отримується у Portmone.</comment>
+                    <depends>
+                        <field id="installment">1</field>
+                    </depends>
+                </field>
+                <field id="installment_login" translate="label comment" type="text" sortOrder="29" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Логін компанії для розтермінування</label>
+                    <comment>Використовується для формування підпису запиту та для отримання статусу оплати.</comment>
+                    <depends>
+                        <field id="installment">1</field>
+                    </depends>
+                </field>
+                <field id="installment_password" translate="label comment" type="password" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Пароль компанії для розтермінування</label>
+                    <comment>Використовується для отримання статусу оплати.</comment>
+                    <depends>
+                        <field id="installment">1</field>
+                    </depends>
+                </field>
+                <field id="installment_key" translate="label comment" type="text" sortOrder="31" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Ключ компанії для розтермінування</label>
+                    <comment>Використовується для формування підпису запиту. Отримується у Portmone.</comment>
+                    <depends>
+                        <field id="installment">1</field>
+                    </depends>
+                </field>
+                <field id="installment_min_amount" translate="label comment" type="text" sortOrder="32" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Мінімальна сума замовлення</label>
+                    <validate>validate-number</validate>
+                    <comment>Якщо сума замовлення менша за вказану, розтермінування не відображається. 0 означає без обмежень.</comment>
+                    <depends>
+                        <field id="installment">1</field>
+                    </depends>
+                </field>
+
+                <field id="installment_banks" translate="label" type="text" sortOrder="33" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Банки-партнери</label>
+                    <frontend_model>PortmonePayment\Portmone\Block\Adminhtml\System\Config\Form\Field\InstallmentBanks</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                    <depends>
+                        <field id="installment">1</field>
+                    </depends>
+                </field>
+
+
+                <!-- Розщеплення платежу -->
+                <field id="split_payment_flag_separator" type="label" sortOrder="37" showInDefault="1"  showInWebsite="1" showInStore="0">
+                    <frontend_model>PortmonePayment\Portmone\Block\Adminhtml\System\Config\Form\Field\Separator</frontend_model>
+                    <label>Розщеплення платежу</label>
+                </field>
+                <field id="split_payment_flag" translate="label" type="select" sortOrder="38" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Розщеплення платежу</label>
+                    <comment>Розподіляє суму замовлення між компаніями-отримувачами, вказаними в картках товарів.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+
+                <!-- Стилізація платіжної кнопки -->
+                <field id="button_style_separator" type="label" sortOrder="40" showInDefault="1"  showInWebsite="1" showInStore="0">
+                    <frontend_model>PortmonePayment\Portmone\Block\Adminhtml\System\Config\Form\Field\Separator</frontend_model>
+                    <label>Стилізація платіжної кнопки</label>
+                </field>
+                <field id="button_style_flag" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1"  showInStore="0">
+                    <label>Стилізація платіжної кнопки</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="button_color" translate="label comment" type="text" sortOrder="41" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Колір кнопки</label>
+                    <comment>Наприклад: #1976d2</comment>
+                    <depends>
+                        <field id="button_style_flag">1</field>
+                    </depends>
+                </field>
+                <field id="button_text_color" translate="label comment" type="text" sortOrder="43" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Колір тексту</label>
+                    <comment>Наприклад: #ffffff</comment>
+                    <depends>
+                        <field id="button_style_flag">1</field>
+                    </depends>
+                </field>
+                <field id="button_height" translate="label comment" type="text" sortOrder="44" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Висота</label>
+                    <comment>Наприклад: 40px</comment>
+                    <depends>
+                        <field id="button_style_flag">1</field>
+                    </depends>
+                </field>
+                <field id="button_width" translate="label comment" type="text" sortOrder="44" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Ширина</label>
+                    <comment>Наприклад: 150px</comment>
+                    <depends>
+                        <field id="button_style_flag">1</field>
+                    </depends>
+                </field>
+                <field id="button_font_family" translate="label comment" type="text" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="0">
+                     <label>Шрифт</label>
+                    <comment>Наприклад: Open Sans</comment>
+                    <depends>
+                        <field id="button_style_flag">1</field>
+                    </depends>
+                </field>
+                <field id="button_font_size" translate="label comment" type="text" sortOrder="46" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Розмір шрифту</label>
+                    <comment>Наприклад: 14px</comment>
+                    <depends>
+                        <field id="button_style_flag">1</field>
+                    </depends>
+                </field>
+                <field id="button_padding" translate="label comment" type="text" sortOrder="47" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Відступи</label>
+                    <comment>Наприклад: 5px</comment>
+                    <depends>
+                        <field id="button_style_flag">1</field>
+                    </depends>
+                </field>
+                <field id="button_padding" translate="label comment" type="text" sortOrder="48" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Рамка</label>
+                    <comment>Наприклад: 1px solid grey</comment>
+                    <depends>
+                        <field id="button_style_flag">1</field>
+                    </depends>
+                </field>
+                <field id="button_border_radius" translate="label comment" type="text" sortOrder="49" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Заокруглення кутів</label>
+                    <comment>Наприклад: 4px</comment>
+                    <depends>
+                        <field id="button_style_flag">1</field>
+                    </depends>
+                </field>
+
             </group>
         </section>
     </system>

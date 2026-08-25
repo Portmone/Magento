@@ -15,6 +15,7 @@
                 <model>PortmonePayment\Portmone\Model\Portmone</model>
                 <group>offline</group>
                 <action_url>https://www.portmone.com.ua/gateway/</action_url>
+                <payment_mode>redirect</payment_mode>
             </portmone>
         </payment>
     </default>

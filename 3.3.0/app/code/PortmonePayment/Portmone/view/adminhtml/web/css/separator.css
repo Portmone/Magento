@@ -1,0 +1,17 @@
+.portmone-config-separator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 15px 0 10px;
+}
+
+.portmone-config-separator__title {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.portmone-config-separator__line {
+    flex: 1;
+    height: 1px;
+    background: #cbd6d6;
+}

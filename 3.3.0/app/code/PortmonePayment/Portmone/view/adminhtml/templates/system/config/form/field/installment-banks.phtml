@@ -1,0 +1,92 @@
+<?php
+/** @var \PortmonePayment\Portmone\Block\Adminhtml\System\Config\Form\Field\InstallmentBanks $block */
+/** @var \Magento\Framework\Data\Form\Element\AbstractElement $element */
+/** @var \Magento\Framework\Escaper $escaper */
+
+$banks = $block->getBanks();
+$value = $element->getValue();
+
+if (!is_array($value)) {
+    $value = [];
+}
+
+$banksTooltip = (string) __('Оберіть банки, які будуть доступні клієнту на платіжній формі.');
+$termTooltip = (string) __('Максимальна кількість місяців, доступна клієнту для цього банку.');
+?>
+
+<div class="portmone-installment-banks">
+    <div class="portmone-installment-bank portmone-installment-bank__header">
+        <div class="portmone-installment-bank__label"></div>
+
+        <div class="portmone-installment-bank__term"></div>
+
+        <div class="portmone-installment-bank__checkbox">
+            <div class="tooltip">
+                <span class="help">
+                    <span></span>
+                </span>
+                <div class="tooltip-content">
+                    <?= $escaper->escapeHtml($banksTooltip) ?>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <?php foreach ($banks as $code => $label): ?>
+        <?php
+        $bankConfig = $value[$code] ?? [];
+
+        $enabled = !empty($bankConfig['enabled']);
+        $term = $bankConfig['term'] ?? null;
+        ?>
+
+        <div class="portmone-installment-bank">
+            <div class="portmone-installment-bank__label">
+                <?= $escaper->escapeHtml($label) ?>
+            </div>
+
+            <div class="portmone-installment-bank__term">
+                <input
+                        type="number"
+                        class="input-text admin__control-text"
+                        name="groups[portmone][fields][installment_banks][value][<?= $escaper->escapeHtmlAttr($code) ?>][term]"
+                        value="<?= $escaper->escapeHtmlAttr((string) ($term ?? '')) ?>"
+                        min="1"
+                        <?= $enabled ? '' : 'disabled' ?>
+                />
+
+                <div class="tooltip">
+                    <span class="help">
+                        <span></span>
+                    </span>
+                    <div class="tooltip-content">
+                        <?= $escaper->escapeHtml($termTooltip) ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="portmone-installment-bank__checkbox">
+                <input
+                        type="hidden"
+                        name="groups[portmone][fields][installment_banks][value][<?= $escaper->escapeHtmlAttr($code) ?>][enabled]"
+                        value="0"
+                />
+
+                <input
+                        type="checkbox"
+                        name="groups[portmone][fields][installment_banks][value][<?= $escaper->escapeHtmlAttr($code) ?>][enabled]"
+                        value="1"
+                        <?= $enabled ? 'checked' : '' ?>
+                />
+            </div>
+        </div>
+    <?php endforeach; ?>
+</div>
+
+<script>
+    require([
+        'PortmonePayment_Portmone/js/installment-banks'
+    ], function (installmentBanks) {
+        installmentBanks();
+    });
+</script>
