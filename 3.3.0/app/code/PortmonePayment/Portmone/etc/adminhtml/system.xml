@@ -158,7 +158,7 @@
 
 
                 <!-- Стилізація платіжної кнопки -->
-                <field id="button_style_separator" type="label" sortOrder="40" showInDefault="1"  showInWebsite="1" showInStore="0">
+                <field id="button_style_separator" type="label" sortOrder="39" showInDefault="1"  showInWebsite="1" showInStore="0">
                     <frontend_model>PortmonePayment\Portmone\Block\Adminhtml\System\Config\Form\Field\Separator</frontend_model>
                     <label>Стилізація платіжної кнопки</label>
                 </field>
@@ -215,7 +215,7 @@
                         <field id="button_style_flag">1</field>
                     </depends>
                 </field>
-                <field id="button_padding" translate="label comment" type="text" sortOrder="48" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="button_border" translate="label comment" type="text" sortOrder="48" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Рамка</label>
                     <comment>Наприклад: 1px solid grey</comment>
                     <depends>
