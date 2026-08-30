@@ -72,3 +72,10 @@
 "Спосіб відображення платіжної форми","Payment form display method"
 "Опис платежу","Order description"
 "Опис платежу (призначення оплати). Максимальна кількість символів — 250. Якщо вказати %order_number, його буде замінено на реальний номер замовлення.","Payment description (payment purpose). Maximum number of characters is 250. If you specify %order_number, it will be replaced with the actual order number."
+"Оплатити через Portmone","Pay via Portmone"
+"Оплатити через Portmone (Розтермінування)","Pay via Portmone (Installment)"
+
+
+
+
+

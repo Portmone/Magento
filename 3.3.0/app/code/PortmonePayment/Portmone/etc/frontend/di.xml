@@ -4,7 +4,7 @@
     <type name="Magento\Checkout\Model\CompositeConfigProvider">
         <arguments>
             <argument name="configProviders" xsi:type="array">
-                <item name="additional_provider" xsi:type="object">PortmonePayment\Portmone\Model\AdditionalConfigProvider</item>
+                <item name="portmone_payment_config_provider" xsi:type="object">PortmonePayment\Portmone\Model\Ui\ConfigProvider</item>
             </argument>
         </arguments>
     </type>
