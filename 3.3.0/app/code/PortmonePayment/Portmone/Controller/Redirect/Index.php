@@ -38,8 +38,15 @@ class Index implements HttpGetActionInterface
         $paymentType = $this->request->getParam('type');
 
         if (!$orderId) {
+            $this->logger->error('Portmone Redirect Error: Missing order_id param.');
+
+            // Додаємо червону помилку для відображення користувачу
+            $this->messageManager->addErrorMessage(__('Не вдалося ініціалізувати оплату. Відсутній ідентифікатор замовлення.'));
+
+            // Повертаємо в кошик, де користувач і побачить цей текст
             return $resultRedirect->setPath('checkout/cart');
         }
+
 
         try {
             // 1. Завантажуємо замовлення

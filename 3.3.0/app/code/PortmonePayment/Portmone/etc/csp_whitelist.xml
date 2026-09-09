@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<csp_whitelist xmlns:xsi="http://w3.org" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp:etc/csp_whitelist.xsd">
+    <policies>
+        <!-- 1. Дозволяємо підключення JS-файлів -->
+        <policy id="script-src">
+            <values>
+                <value id="portmone_scripts_wildcard" type="host">*.portmone.com.ua</value>
+                <value id="portmone_scripts_www" type="host">://portmone.com.ua</value>
+            </values>
+        </policy>
+
+        <!-- 2. Дозволяємо XHR/POST запити до платіжного шлюзу -->
+        <policy id="connect-src">
+            <values>
+                <value id="portmone_gate" type="host">://portmone.com.ua</value>
+                <value id="portmone_connect_wildcard" type="host">*.portmone.com.ua</value>
+            </values>
+        </policy>
+
+        <!-- 3. Дозволяємо відображення самого Iframe вікна -->
+        <policy id="frame-src">
+            <values>
+                <value id="portmone_frame_wildcard" type="host">*.portmone.com.ua</value>
+                <value id="portmone_frame_www" type="host">://portmone.com.ua</value>
+                <value id="google_pay_origin" type="host">*.google.com</value>
+            </values>
+        </policy>
+    </policies>
+</csp_whitelist>

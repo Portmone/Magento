@@ -5,7 +5,8 @@ define([
     'Magento_Checkout/js/model/payment/additional-validators',
     'Magento_Checkout/js/action/place-order',
     'Magento_Checkout/js/model/full-screen-loader',
-    'mage/url' // 7-й елемент у масиві define
+    'mage/url',
+    'portmonePg'
 ], function (
     ko,
     $,
@@ -20,6 +21,18 @@ define([
     return Component.extend({
         defaults: {
             template: 'PortmonePayment_Portmone/payment/portmone'
+        },
+
+        initialize: function () {
+            this._super();
+
+            if ($('#portmone-payment-frame').length === 0) {
+                $('<div>', {
+                    id: 'portmone-payment-frame'
+                }).appendTo('body');
+            }
+
+            return this;
         },
 
         // Перевіряє, чи увімкнено режим редіректу
@@ -38,11 +51,7 @@ define([
 
         // Повертає текст кнопки Оплатити через Portmone
         getButtonText: function () {
-            var config = window.checkoutConfig.payment.portmone;
-
-            return (config && config.buttonText)
-                ? config.buttonText
-                : 'Оплатити';
+            return window.checkoutConfig.payment.portmone.buttonText;
         },
 
         // Перевіряє, чи увімкнено Розтермінування Redirect
@@ -62,14 +71,10 @@ define([
 
         // Повертає текст кнопки Оплатити через Portmone (Розтермінування)
         getInstallmentButtonText: function () {
-            var config = window.checkoutConfig.payment.portmone;
-
-            return (config && config.buttonInstallmentText)
-                ? config.buttonInstallmentText
-                : 'Оплатити (Розтермінування)';
+            return window.checkoutConfig.payment.portmone.buttonInstallmentText;
         },
 
-        portmonePlaceOrder: function (paymentType) {
+        portmonePlaceOrder: function (paymentType, paymentMode) {
             var self = this;
 
             if (!additionalValidators.validate()) {
@@ -94,7 +99,15 @@ define([
                 })
                 .done(function (orderId) {
                     // Замовлення успішно створено
-                    self.redirectToPortmone(orderId, paymentType);
+
+                    if (paymentMode === 'redirect') {
+                        fullScreenLoader.stopLoader();
+                        self.redirectToPortmone(orderId, paymentType);
+                    }
+
+                    if (paymentMode === 'iframe') {
+                        self.iframePortmone(orderId, paymentType);
+                    }
                 });
 
             return false;
@@ -107,6 +120,64 @@ define([
 
             // Робимо перехід
             window.location.replace(redirectUrl);
+        },
+
+        iframePortmone: function (orderId, paymentType) {
+
+            var self = this;
+
+            $.ajax({
+                url: urlBuilder.build('portmone/iframe/getData', {_secure: true}),
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    orderId: orderId,
+                    paymentType: paymentType
+                }
+            }).done(function (response) {
+
+                if (response.success && response.iframeData) {
+                    var iframeData = response.iframeData;
+                    iframeData.frameHolderId = 'portmone-payment-frame';
+
+                    if (typeof PG !== 'undefined') {
+                        var $hiddenBtn = $('#portmone-hidden-trigger-btn');
+
+                        PG.setButtonId('portmone-hidden-trigger-btn');
+                        PG.paymentData("gateway", iframeData, "frame");
+                        PG.create();
+
+                        fullScreenLoader.stopLoader();
+                        window.setTimeout( function () {
+                            $hiddenBtn.trigger('click');
+                        }, 100);
+                    }
+
+                    return;
+                }
+
+                if (!response.success && response.message) {
+                    fullScreenLoader.stopLoader();
+                    self.messageContainer.addErrorMessage({
+                        message: response.message
+                    });
+
+                    return;
+                }
+
+                fullScreenLoader.stopLoader();
+                self.messageContainer.addErrorMessage({
+                    message: window.checkoutConfig.payment.portmone.errorMessage.iframeGetDataResponse
+                });
+                console.error('Portmone: invalid payment data response');
+
+            }).fail(function (jqXHR) {
+                fullScreenLoader.stopLoader();
+                self.messageContainer.addErrorMessage({
+                    message: window.checkoutConfig.payment.portmone.errorMessage.iframeGetDataFail
+                });
+                console.error('Portmone: failed to get payment data', jqXHR);
+            });
         }
     });
 });

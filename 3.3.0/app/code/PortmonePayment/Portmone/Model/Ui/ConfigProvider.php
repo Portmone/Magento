@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace PortmonePayment\Portmone\Model\Ui;
 
 use Magento\Checkout\Model\ConfigProviderInterface;
@@ -23,12 +26,12 @@ class ConfigProvider implements ConfigProviderInterface
         );
 
         $buttonText = $this->scopeConfig->getValue(
-            'payment/portmone/title',
+            'payment/portmone/title_btn',
             ScopeInterface::SCOPE_STORE
         );
 
         $buttonInstallmentText = $this->scopeConfig->getValue(
-            'payment/portmone/installment_title',
+            'payment/portmone/installment_title_btn',
             ScopeInterface::SCOPE_STORE
         );
 
@@ -41,9 +44,13 @@ class ConfigProvider implements ConfigProviderInterface
             'payment' => [
                 'portmone' => [
                     'paymentMode' => $paymentMode,
-                    'buttonText'  => $buttonText ?: __('Оплатити через Portmone'),
+                    'buttonText' => $buttonText ?: __('Оформити'),
                     'installmentFlag' => $installmentFlag,
-                    'buttonInstallmentText'  => $buttonInstallmentText ?: __('Оплатити через Portmone (Розтермінування)'),
+                    'buttonInstallmentText' => $buttonInstallmentText ?: __('Оформити розтермінування'),
+                    'errorMessage' => [
+                        'iframeGetDataResponse' => __('Не вдалося підготувати оплату через Portmone.'),
+                        'iframeGetDataFail' => __('Не вдалося отримати дані для оплати через Portmone.'),
+                    ],
                 ]
             ]
         ];

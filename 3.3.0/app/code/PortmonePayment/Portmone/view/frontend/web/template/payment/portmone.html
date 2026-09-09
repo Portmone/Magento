@@ -29,7 +29,7 @@
                 <button class="action primary checkout"
                         type="button"
                         data-bind="
-                            click: portmonePlaceOrder.bind($data, 'full'),
+                            click: portmonePlaceOrder.bind($data, 'full', 'redirect'),
                             attr: {title: getButtonText()},
                             css: {disabled: !isPlaceOrderActionAllowed()},
                             enable: (getCode() == isChecked()),
@@ -43,7 +43,7 @@
                 <button class="action primary checkout"
                         type="button"
                         data-bind="
-                            click: portmonePlaceOrder.bind($data, 'installment'),
+                            click: portmonePlaceOrder.bind($data, 'installment', 'redirect'),
                             attr: {title: getInstallmentButtonText()},
                             css: {disabled: !isPlaceOrderActionAllowed()},
                             enable: (getCode() == isChecked()),
@@ -54,11 +54,11 @@
                 </button>
             </div>
 
-            <div class="primary">
+            <div class="primary" style="margin: 0 5px">
                 <button class="action primary checkout"
                         type="button"
                         data-bind="
-                            click: portmonePlaceOrder.bind($data, 'full'),
+                            click: portmonePlaceOrder.bind($data, 'full', 'iframe'),
                             attr: {title: getButtonText()},
                             css: {disabled: !isPlaceOrderActionAllowed()},
                             enable: (getCode() == isChecked()),
@@ -68,11 +68,11 @@
                     <span data-bind="text: getButtonText()"></span>
                 </button>
             </div>
-            <div class="primary">
+            <div class="primary" style="margin: 0 5px">
                 <button class="action primary checkout"
                         type="button"
                         data-bind="
-                            click: portmonePlaceOrder.bind($data, 'installment'),
+                            click: portmonePlaceOrder.bind($data, 'installment', 'iframe'),
                             attr: {title: getInstallmentButtonText()},
                             css: {disabled: !isPlaceOrderActionAllowed()},
                             enable: (getCode() == isChecked()),
@@ -82,6 +82,11 @@
                     <span data-bind="text: getInstallmentButtonText()"></span>
                 </button>
             </div>
+            <!-- Прихована кнопка для ініціалізації фрейму з JS -->
+            <button id="portmone-hidden-trigger-btn"
+                    type="button"
+                    style="display: none;">
+            </button>
         </div>
     </div>
 </div>

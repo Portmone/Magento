@@ -53,6 +53,15 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Ознака преавторизації платежу (значення "Yes" вказує на те, що ця оплата здійснюється з використанням процедури преавторизації, значення "No" – звичайна оплата без преавторизації). Попередня авторизація (преавторизація) – блокування коштів на Картці користувача без фактичного фінансового списання коштів з рахунку Клієнта.</comment>
                 </field>
+                <field id="title_btn" translate="label comment" type="text" sortOrder="11" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Назва кнопки для оплати</label>
+                    <comment>Задає текст для кнопки дії на чекауті. Наприклад: "Оформити".</comment>
+                </field>
+                <field id="test_mode_flag" translate="label comment" type="select" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Режим тестування</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>У режимі тест у систему портмоне передається номер замовлення (shopOrderNumber) як конкотенація рядків номер замовлення у системі партнера, символ _ , позначка часу</comment>
+                </field>
 
 
                 <!-- Спосіб відображення платіжної форми -->
@@ -91,9 +100,9 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <comment>Додає в оформлення замовлення окремий спосіб оплати в розстрочку.</comment>
                 </field>
-                <field id="installment_title" translate="label comment" type="text" sortOrder="27" showInDefault="1" showInWebsite="1" showInStore="0">
-                    <label>Назва способу оплати для розтермінування</label>
-                    <comment>Назва, яку клієнт бачить у списку способів оплати.</comment>
+                <field id="installment_title_btn" translate="label comment" type="text" sortOrder="27" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Назва кнопки для розтермінування</label>
+                    <comment>Задає текст для другої кнопки дії на чекауті. Наприклад: "Оформити розтермінування".</comment>
                     <depends>
                         <field id="installment">1</field>
                     </depends>

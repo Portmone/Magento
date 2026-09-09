@@ -74,6 +74,24 @@
 "Опис платежу (призначення оплати). Максимальна кількість символів — 250. Якщо вказати %order_number, його буде замінено на реальний номер замовлення.","Payment description (payment purpose). Maximum number of characters is 250. If you specify %order_number, it will be replaced with the actual order number."
 "Оплатити через Portmone","Pay via Portmone"
 "Оплатити через Portmone (Розтермінування)","Pay via Portmone (Installment)"
+"Режим тестування","Testing mode"
+"У режимі тест у систему портмоне передається номер замовлення (shopOrderNumber) як конкотенація рядків номер замовлення у системі партнера, символ _ , позначка часу","In test mode, the order number (shopOrderNumber) is transferred to the wallet system as a concatenation of the strings order number in the partner system, the symbol _ , and a timestamp"
+"Не вдалося підготувати оплату через Portmone.","Unable to prepare payment via Portmone."
+"Не вдалося отримати дані для оплати через Portmone.","Unable to obtain payment details via Portmone."
+"Назва кнопки для оплати","Payment button name"
+"Задає текст для кнопки дії на чекауті. Наприклад: ""Оформити"".","Sets the text for the checkout action button. For example: ""Checkout""."
+"Оформити","Checkout"
+"Назва кнопки для розтермінування","Name of the button for rescheduling"
+"Задає текст для другої кнопки дії на чекауті. Наприклад: ""Оформити розтермінування"".","Sets the text for the second action button at checkout. For example: ""Checkout installment""."
+"Оформити розтермінування","Checkout installment"
+"Некорректный идентификатор заказа.","Incorrect order identifier."
+"Некорректный тип платежа.","Incorrect payment type."
+"Сума замовлення має бути більшою ""%1"".","Order amount must be greater than ""%1""."
+
+
+
+
+
 
 
 

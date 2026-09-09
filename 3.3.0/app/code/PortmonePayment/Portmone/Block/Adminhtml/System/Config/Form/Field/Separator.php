@@ -18,4 +18,3 @@ class Separator extends Field
         return $this->toHtml();
     }
 }
-
