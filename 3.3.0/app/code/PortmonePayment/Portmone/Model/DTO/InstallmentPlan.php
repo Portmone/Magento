@@ -37,7 +37,7 @@ class InstallmentPlan implements JsonSerializable
             ScopeInterface::SCOPE_STORE
         ) ?? '{}';
 
-        $banks = json_decode($installmentBanks, true);
+        $banks = json_decode($installmentBanks, true) ?? [];
 
         foreach ($banks as $bankName => $bankSettings ) {
             if (!isset($this->mapperBanks[$bankName])) {

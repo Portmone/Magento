@@ -9,9 +9,9 @@ use Magento\Framework\Locale\ResolverInterface;
 
 class Payer implements JsonSerializable
 {
-    private $lang;
-    private $emailAddress;
-    private $showEmail = 'Y';
+    private string $lang;
+    private string $emailAddress;
+    private string $showEmail = 'Y';
 
     public function __construct(
         private readonly ResolverInterface $localeResolver

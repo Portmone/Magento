@@ -87,8 +87,18 @@
 "Некорректный идентификатор заказа.","Incorrect order identifier."
 "Некорректный тип платежа.","Incorrect payment type."
 "Сума замовлення має бути більшою ""%1"".","Order amount must be greater than ""%1""."
+"Не вдалося змінити статус замовлення.","Unable to change order status."
+"Некоректний ідентифікатор замовлення.","Incorrect щквук identifier."
+"Некоректний тип платежів.","Invalid payment type.."
+"Некоректний ідентифікатор компанії.","Incorrect company identifier."
+"Будь ласка, зв'яжіться з нами, щоб отримати допомогу.","Please contact us for assistance."
 
-
+"#13P Статус цього замовлення %1 його неможливо оплатити","#13P The status of this order is %1; it cannot be paid for."
+"#15P У системі Portmone.com цього платежу немає, він повернутий чи створений некоректно","#15P This payment is not found in the Portmone.com system; it has been refunded or was created incorrectly."
+"#17P Помилка при надсиланні запиту  status code: %1","#17P Error sending request; status code: %1"
+"#18P Під час здійснення оплати виникла помилка. portmone Order Status: %1'   checkPortmoneOrderStatus","#18P An error occurred during payment. Portmone Order Status: %1"
+"c","Оформити"
+"Дякуємо за покупку","Thank you for your purchase."
 
 
 

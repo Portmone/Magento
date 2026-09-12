@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace PortmonePayment\Portmone\Model\DTO;
 
-use InvalidArgumentException;
 use JsonSerializable;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Phrase;
 use Magento\Framework\UrlInterface;
 use PortmonePayment\Portmone\Model\Enum\PaymentMode;
 
@@ -21,7 +22,7 @@ class Order implements JsonSerializable
     private string $callbackUrl;
     private string $preauthFlag;
     private string $expTime;
-    private $encoding = 'UTF-8';
+    private string $encoding = 'UTF-8';
     private string $attribute5 = '';
 
     public function __construct(
@@ -121,11 +122,11 @@ class Order implements JsonSerializable
         $attribute5 = '';
 
         foreach ($splitPayments as $payeeId => $amount) {
-            $attribute5 .= $payeeId . ';' . ($amount / 100) . ';';
+            $attribute5 .= ':' . $payeeId . ';' . ($amount / 100) . ';';
         }
 
         if (strlen($attribute5) > 500) {
-            throw new InvalidArgumentException((string)__('Параметр attribute5 перевищує допустимі 500 символів.'));
+            throw new LocalizedException(new Phrase('Параметр attribute5 перевищує допустимі 500 символів.'));
         }
 
         $this->attribute5 = $attribute5;
@@ -139,7 +140,7 @@ class Order implements JsonSerializable
         ) ?? '';
 
 
-        $this->description = str_replace('%order_number', $this->shopOrderNumber, $description);;
+        $this->description = str_replace('%order_number', $this->shopOrderNumber, $description);
     }
 
     private function setCallbackUrl(): void

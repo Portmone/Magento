@@ -5,6 +5,7 @@ define([
     'Magento_Checkout/js/model/payment/additional-validators',
     'Magento_Checkout/js/action/place-order',
     'Magento_Checkout/js/model/full-screen-loader',
+    'Magento_Checkout/js/model/quote',
     'mage/url',
     'portmonePg'
 ], function (
@@ -14,6 +15,7 @@ define([
     additionalValidators,
     placeOrderAction,
     fullScreenLoader,
+    quote,
     urlBuilder
 ) {
     'use strict';
@@ -66,7 +68,21 @@ define([
         isInstallmentIframe: function () {
             var config = window.checkoutConfig.payment.portmone;
 
-            return config && config.installmentFlag === '1' && config.paymentMode === 'iframe';
+            if (!config || config.installmentFlag !== '1' || config.paymentMode !== 'iframe') {
+                return false;
+            }
+
+            var installmentMinAmount = parseFloat(config.installmentMinAmount);
+            if (installmentMinAmount === 0) {
+                return true;
+            }
+
+            var totals = quote.totals();
+            if (!totals) {
+                return false;
+            }
+
+            return parseFloat(totals.grand_total) >= installmentMinAmount;
         },
 
         // Повертає текст кнопки Оплатити через Portmone (Розтермінування)
@@ -145,12 +161,21 @@ define([
 
                         PG.setButtonId('portmone-hidden-trigger-btn');
                         PG.paymentData("gateway", iframeData, "frame");
+
+                        PG.onClose(function () {
+                            fullScreenLoader.stopLoader();
+                            document.location.reload();
+                        });
+
+                        PG.success(function (data) {
+                            self.successPortmone(orderId, paymentType, data);
+                        });
+
                         PG.create();
 
-                        fullScreenLoader.stopLoader();
                         window.setTimeout( function () {
                             $hiddenBtn.trigger('click');
-                        }, 100);
+                        }, 300);
                     }
 
                     return;
@@ -177,6 +202,53 @@ define([
                     message: window.checkoutConfig.payment.portmone.errorMessage.iframeGetDataFail
                 });
                 console.error('Portmone: failed to get payment data', jqXHR);
+            });
+        },
+
+        successPortmone: function (orderId, paymentType, data) {
+
+            $.ajax({
+                url: urlBuilder.build('portmone/iframe/success', {_secure: true}),
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    orderId: orderId,
+                    paymentType: paymentType,
+                    shopOrderNumber: data.billNumber,
+                    shopBillId: data.shopBillId
+                }
+            }).done(function (response) {
+
+
+                if (response.success) {
+                    fullScreenLoader.stopLoader();
+
+                    var successUrl = urlBuilder.build('checkout/onepage/success');
+                    window.location.replace(successUrl);
+
+                    return;
+                }
+
+                fullScreenLoader.stopLoader();
+
+                if (!response.success && response.message) {
+
+                    self.messageContainer.addErrorMessage({
+                        message: response.message
+                    });
+
+                    alert(response.message);
+                    document.location.reload();
+                }
+
+            }).fail(function (jqXHR) {
+                fullScreenLoader.stopLoader();
+                self.messageContainer.addErrorMessage({
+                    message: window.checkoutConfig.payment.portmone.errorMessage.iframeSuccessFail
+                });
+                console.error('Portmone: Unable to change order status', jqXHR);
+                alert(window.checkoutConfig.payment.portmone.errorMessage.iframeSuccessFail);
+                document.location.reload();
             });
         }
     });

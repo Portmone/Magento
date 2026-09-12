@@ -6,9 +6,9 @@ namespace PortmonePayment\Portmone\Model;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\ScopeInterface;
-
 use Magento\Sales\Api\OrderRepositoryInterface;
-use PortmonePayment\Portmone\Exception\InstallmentMinAmountException;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Phrase;
 use PortmonePayment\Portmone\Model\DTO\PaymentData as PaymentDataDTO;
 use PortmonePayment\Portmone\Model\DTO\InstallmentPlan;
 use PortmonePayment\Portmone\Model\DTO\Payee;
@@ -42,7 +42,9 @@ class PaymentData
         );
 
         if ($paymentType === PaymentType::INSTALLMENT->value && !empty($installmentMinAmount) && $installmentMinAmount > $order->getBaseGrandTotal()) {
-            throw new InstallmentMinAmountException(__('Сума замовлення має бути більшою "%1".', $installmentMinAmount));
+            throw new LocalizedException(
+                new Phrase('Сума замовлення має бути більшою "%1".', $installmentMinAmount)
+            );
         }
 
         $this->orderDto->setShopOrderNumber($orderId);

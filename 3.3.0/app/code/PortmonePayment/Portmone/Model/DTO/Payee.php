@@ -99,7 +99,7 @@ class Payee implements JsonSerializable
         }
     }
 
-    public function setKey(): void
+    private function setKey(): void
     {
 
         if ($this->paymentType === PaymentType::FULL->value) {
@@ -143,6 +143,6 @@ class Payee implements JsonSerializable
 
     private function setDt(): void
     {
-        $this->dt = date('Ymdhis');;
+        $this->dt = date('Ymdhis');
     }
 }
