@@ -100,6 +100,16 @@ define([
             return window.checkoutConfig.payment.portmone.buttonInstallmentText;
         },
 
+        getButtonStyles: function () {
+            var config = window.checkoutConfig.payment.portmone;
+
+            if (config.buttonStyleFlag == 1) {
+                return config.buttonStyle;
+            }
+
+            return {};
+        },
+
         portmonePlaceOrder: function (paymentType, paymentMode) {
             var self = this;
 
@@ -216,6 +226,7 @@ define([
         },
 
         successPortmone: function (orderId, paymentType, data) {
+            var self = this;
 
             $.ajax({
                 url: urlBuilder.build('portmone/iframe/success', {_secure: true}),
@@ -246,8 +257,6 @@ define([
                     self.messageContainer.addErrorMessage({
                         message: response.message
                     });
-
-                    alert(response.message);
                     document.location.reload();
                 }
 
@@ -257,7 +266,6 @@ define([
                     message: window.checkoutConfig.payment.portmone.errorMessage.iframeSuccessFail
                 });
                 console.error('Portmone: Unable to change order status', jqXHR);
-                alert(window.checkoutConfig.payment.portmone.errorMessage.iframeSuccessFail);
                 document.location.reload();
             });
         }

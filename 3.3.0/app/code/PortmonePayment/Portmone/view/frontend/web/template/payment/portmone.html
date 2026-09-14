@@ -33,7 +33,8 @@
                             attr: {title: getButtonText()},
                             css: {disabled: !isPlaceOrderActionAllowed()},
                             enable: (getCode() == isChecked()),
-                            visible: isRedirectMode()
+                            visible: isRedirectMode(),
+                            style: getButtonStyles()
                             "
                         disabled>
                     <span data-bind="text: getButtonText()"></span>
@@ -47,7 +48,8 @@
                             attr: {title: getInstallmentButtonText()},
                             css: {disabled: !isPlaceOrderActionAllowed()},
                             enable: (getCode() == isChecked()),
-                            visible: isInstallmentRedirect()
+                            visible: isInstallmentRedirect(),
+                            style: getButtonStyles()
                             "
                         disabled>
                     <span data-bind="text: getInstallmentButtonText()"></span>
@@ -62,7 +64,8 @@
                             attr: {title: getButtonText()},
                             css: {disabled: !isPlaceOrderActionAllowed()},
                             enable: (getCode() == isChecked()),
-                            visible: isIframeMode()
+                            visible: isIframeMode(),
+                            style: getButtonStyles()
                             "
                         disabled>
                     <span data-bind="text: getButtonText()"></span>
@@ -76,7 +79,8 @@
                             attr: {title: getInstallmentButtonText()},
                             css: {disabled: !isPlaceOrderActionAllowed()},
                             enable: (getCode() == isChecked()),
-                            visible: isInstallmentIframe()
+                            visible: isInstallmentIframe(),
+                           style: getButtonStyles()
                             "
                         disabled>
                     <span data-bind="text: getInstallmentButtonText()"></span>

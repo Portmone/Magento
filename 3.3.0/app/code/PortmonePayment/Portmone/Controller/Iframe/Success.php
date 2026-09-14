@@ -8,6 +8,7 @@ use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
+use Magento\Framework\Message\ManagerInterface as MessageManagerInterface;
 use Magento\Framework\Phrase;
 use PortmonePayment\Portmone\Model\Enum\PaymentType;
 use PortmonePayment\Portmone\Model\IframeSuccess;
@@ -22,7 +23,8 @@ class Success implements HttpPostActionInterface
         private readonly LoggerInterface  $logger,
         private readonly IframeSuccess    $iframeSuccess,
         private readonly RequestInterface $request,
-        private readonly JsonFactory      $resultJsonFactory
+        private readonly JsonFactory      $resultJsonFactory,
+        private readonly MessageManagerInterface $messageManager,
     )
     {
     }
@@ -67,6 +69,7 @@ class Success implements HttpPostActionInterface
 
             // Запис у var/log/support.log
             $this->logger->error($t->getMessage());
+            $this->messageManager->addErrorMessage($t->getMessage());
 
             return $this->resultJsonFactory
                 ->create()
