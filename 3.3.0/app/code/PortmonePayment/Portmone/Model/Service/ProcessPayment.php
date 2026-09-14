@@ -28,7 +28,7 @@ class ProcessPayment
     {
     }
 
-    public function updateOrder(OrderInterface $order, string $status, string $shopOrderNumber): OrderInterface
+    public function updateOrder(OrderInterface $order, string $status, string $shopOrderNumber, string $shopBillId): OrderInterface
     {
 
         if ($status === self::ORDER_PAYED) {
@@ -39,10 +39,12 @@ class ProcessPayment
 
         if ($status === self::ORDER_PREAUTH) {
             $newStatus = Order::STATE_HOLDED;
-            $order->setData('shop_order_number', $shopOrderNumber);
             $order->setStatus($newStatus);
             $order->addCommentToStatusHistory(new Phrase('Дякуємо за покупку'), $newStatus, true);
         }
+
+        $order->setData('shop_order_number', $shopOrderNumber);
+        $order->setData('shop_bill_id', $shopBillId);
 
         return $order;
     }

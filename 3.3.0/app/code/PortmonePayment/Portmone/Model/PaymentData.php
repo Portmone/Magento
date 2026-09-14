@@ -66,6 +66,8 @@ class PaymentData
         $this->payee->setPayeeId();
         $this->payee->setSignature($this->orderDto->getShopOrderNumber(), $this->orderDto->getBillAmount());
 
+        $order->setData('payee_id',  $this->payee->getPayeeId());
+        $this->orderRepository->save($order);
 
         $paymentDataDto = new PaymentDataDTO(
             $this->payee,

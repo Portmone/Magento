@@ -1,108 +1,57 @@
 <?php
+
+declare(strict_types=1);
+
 namespace PortmonePayment\Portmone\Controller\Redirect;
 
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\Result\RedirectFactory;
-use Magento\Sales\Api\OrderRepositoryInterface;
-use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\Framework\Message\ManagerInterface as MessageManagerInterface;
+use Magento\Framework\Phrase;
+use PortmonePayment\Portmone\Model\Enum\PaymentType;
+use PortmonePayment\Portmone\Model\LinkPayment;
 use Psr\Log\LoggerInterface;
+use Throwable;
 
 class Index implements HttpGetActionInterface
 {
-    private $request;
-    private $orderRepository;
-    private $redirectFactory;
-    private $checkoutSession;
-    private $logger;
-
     public function __construct(
-        RequestInterface $request,
-        OrderRepositoryInterface $orderRepository,
-        RedirectFactory $redirectFactory,
-        CheckoutSession $checkoutSession,
-        LoggerInterface $logger
-    ) {
-        $this->request = $request;
-        $this->orderRepository = $orderRepository;
-        $this->redirectFactory = $redirectFactory;
-        $this->checkoutSession = $checkoutSession;
-        $this->logger = $logger;
+        private readonly RequestInterface        $request,
+        private readonly LoggerInterface         $logger,
+        private readonly RedirectFactory         $redirectFactory,
+        private readonly MessageManagerInterface $messageManager,
+        private readonly LinkPayment             $linkPayment,
+    )
+    {
     }
 
     public function execute()
     {
         $resultRedirect = $this->redirectFactory->create();
 
-        $orderId = $this->request->getParam('order_id');
-        $paymentType = $this->request->getParam('type');
+        $orderId = $this->request->getParam('orderId');
+        $paymentType = $this->request->getParam('paymentType');
 
-        if (!$orderId) {
-            $this->logger->error('Portmone Redirect Error: Missing order_id param.');
+        if (empty($orderId) || $orderId <= 0) {
+            $this->messageManager->addErrorMessage(new Phrase('Некоректний ідентифікатор замовлення.'));
+            return $resultRedirect->setPath('checkout/cart');
 
-            // Додаємо червону помилку для відображення користувачу
-            $this->messageManager->addErrorMessage(__('Не вдалося ініціалізувати оплату. Відсутній ідентифікатор замовлення.'));
+        }
 
-            // Повертаємо в кошик, де користувач і побачить цей текст
+        if (empty($paymentType) || !in_array($paymentType, [PaymentType::FULL->value, PaymentType::INSTALLMENT->value], true)) {
+            $this->messageManager->addErrorMessage(new Phrase('Некоректний тип платежів.'));
             return $resultRedirect->setPath('checkout/cart');
         }
 
-
         try {
-            // 1. Завантажуємо замовлення
-            $order = $this->orderRepository->get($orderId);
+            $linkPayment = $this->linkPayment->getLinkPayment($orderId, $paymentType);
+            return $resultRedirect->setUrl($linkPayment);
 
-            $amount = $order->getGrandTotal();
-            $currency = $order->getOrderCurrencyCode();
-            $incrementId = $order->getIncrementId();
-
-            // 2. Змінюємо статус замовлення на "Очікує оплати"
-            $order->setState(\Magento\Sales\Model\Order::STATE_PENDING_PAYMENT);
-            $order->setStatus(\Magento\Sales\Model\Order::STATE_PENDING_PAYMENT);
-            $this->orderRepository->save($order);
-
-            // 3. Формуємо параметри для Portmone
-            $payeeId = "1111"; // Тимчасовий ID для тесту
-            $gatewayUrl = "https://portmone.com.ua";
-
-            $paymentParams = [
-                'payee_id'          => $payeeId,
-                'shop_order_number' => $incrementId,
-                'bill_amount'       => (float)$amount,
-                'description'       => 'Order #' . $incrementId,
-                'success_url'       => 'http://127.0.0',
-                'failure_url'       => 'http://127.0.0',
-                'lang'              => 'uk'
-            ];
-
-            if ($paymentType === 'installment') {
-                $paymentParams['EXP_TIME'] = '3';
-            }
-
-            $finalBankUrl = $gatewayUrl . '?' . http_build_query($paymentParams);
-
-            // 4. ОЧИЩЕННЯ КОШИКА РОБИМО ТУТ (КОЛИ ВСЕ ІНШЕ ПРОЙШЛО УСПІШНО)
-            $this->checkoutSession->clearQuote();
-
-            // 5. Перенаправлення на Portmone
-            return $resultRedirect->setUrl($finalBankUrl);
-
-        } catch (\Exception $e) {
-            $this->logger->critical('Portmone Redirect Exception: ' . $e->getMessage());
+        } catch (Throwable $t) {
+            $this->logger->error($t->getMessage());
+            $this->messageManager->addErrorMessage($t->getMessage());
             return $resultRedirect->setPath('checkout/cart');
-
-
-           /*
-            // Записуємо помилку в лог
-            $this->logger->critical('Portmone Error: ' . $e->getMessage());
-
-            // Якщо сталася помилка — зупиняємо виконання і виводимо її на екран!
-            // Це завадить редіректу в порожній кошик і покаже проблему
-            echo "<h2>Критична помилка в контролері:</h2>";
-            echo "<pre>" . $e->getMessage() . "</pre>";
-            echo "<h3>Стек трейс:</h3>";
-            echo "<pre>" . $e->getTraceAsString() . "</pre>";
-            exit;*/
         }
     }
 }

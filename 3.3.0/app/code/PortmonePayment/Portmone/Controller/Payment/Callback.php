@@ -2,69 +2,62 @@
 
 namespace PortmonePayment\Portmone\Controller\Payment;
 
-use Magento\Framework\App\Action\Action;
-use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\Action\HttpGetActionInterface;
+use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\CsrfAwareActionInterface;
 use Magento\Framework\App\Request\InvalidRequestException;
 use Magento\Framework\App\RequestInterface;
-use Magento\Framework\App\Request\Http;
+use Magento\Framework\Controller\Result\RedirectFactory;
+use Magento\Framework\Message\ManagerInterface as MessageManagerInterface;
+use Magento\Framework\Phrase;
+use PortmonePayment\Portmone\Model\ProcessCallback;
+use Psr\Log\LoggerInterface;
+use Throwable;
 
-class Callback extends Action implements CsrfAwareActionInterface
+class Callback implements HttpGetActionInterface, HttpPostActionInterface, CsrfAwareActionInterface
 {
-    protected $resultRedirect;
-    protected $request;
+    public function __construct(
 
-    public function __construct(Context $context, Http $request)
+        private readonly RequestInterface        $request,
+        private readonly LoggerInterface         $logger,
+        private readonly RedirectFactory         $redirectFactory,
+        private readonly MessageManagerInterface $messageManager,
+        private readonly ProcessCallback         $processCallback
+
+    )
     {
-        parent::__construct($context);
-        $this->resultRedirect = $context->getResultFactory();
-        $this->request = $request;
-
     }
 
     public function execute()
     {
-        $resultRedirect = $this->resultRedirectFactory->create();
-        $resultRedirect->setPath('checkout/onepage/success');
-        $post = $this->request->getPost();
+        $resultRedirect = $this->redirectFactory->create();
 
-        if (empty($post)) {
-            $this->messageManager->addErrorMessage(__('Немає інформації про платіж'));
-            return $resultRedirect;
+        $shopBillId = $this->request->getParam('SHOPBILLID');
+        $shopOrderNumber = $this->request->getParam('SHOPORDERNUMBER');
+
+        if (empty($shopOrderNumber) || empty($shopBillId)) {
+            $this->messageManager->addErrorMessage(new Phrase('Не вдалося виконати оплату через платіжну систему Portmone.'));
+            return $resultRedirect->setPath('checkout/cart');
         }
 
-        $paymentMethod = $this->_objectManager->create('PortmonePayment\Portmone\Model\Portmone');
-        $paymentInfo = $paymentMethod->isPaymentValid($post);
-        $paymentMethod->updateOrder($paymentInfo, $post->SHOPORDERNUMBER);
-
-        if ($paymentInfo['status'] == 'PORTMONE_ERROR') {
-            $this->messageManager->addErrorMessage(__($paymentInfo['message']));
+        try {
+            $this->processCallback->process($shopBillId, $shopOrderNumber);
+            return $resultRedirect->setPath('checkout/onepage/success');
+        } catch (Throwable $t) {
+            $this->logger->error($t->getMessage());
+            $this->messageManager->addErrorMessage($t->getMessage());
+            return $resultRedirect->setPath('checkout/cart');
         }
 
-        if ($paymentInfo['status'] == 'PAYED' || $paymentInfo['status'] == 'PREAUTH') {
-            $this->messageManager->addSuccessMessage(__($paymentInfo['message']));
-        }
-
-        return $resultRedirect;
     }
 
-    /**
-     * @param RequestInterface $request
-     *
-     * @return bool|null
-     */
-    public function validateForCsrf(RequestInterface $request): ?bool
-    {
-        return true;
-    }
-
-    /**
-     * @param RequestInterface $request
-     *
-     * @return InvalidRequestException|null
-     */
     public function createCsrfValidationException(RequestInterface $request): ?InvalidRequestException
     {
         return null;
+    }
+
+    public function validateForCsrf(RequestInterface $request): ?bool
+    {
+        return true;
     }
 }

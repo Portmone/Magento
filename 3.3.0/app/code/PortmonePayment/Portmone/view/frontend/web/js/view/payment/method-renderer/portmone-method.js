@@ -60,7 +60,11 @@ define([
         isInstallmentRedirect: function () {
             var config = window.checkoutConfig.payment.portmone;
 
-            return config && config.installmentFlag === '1' && config.paymentMode === 'redirect';
+            if (!config || config.installmentFlag !== '1' || config.paymentMode !== 'redirect') {
+                return false;
+            }
+
+            return this.checkInstallmentMinAmount();
         },
 
 
@@ -72,7 +76,13 @@ define([
                 return false;
             }
 
+            return this.checkInstallmentMinAmount();
+        },
+
+        checkInstallmentMinAmount: function () {
+            var config = window.checkoutConfig.payment.portmone;
             var installmentMinAmount = parseFloat(config.installmentMinAmount);
+
             if (installmentMinAmount === 0) {
                 return true;
             }
@@ -132,7 +142,7 @@ define([
         redirectToPortmone: function (orderId, paymentType) {
            // Отримуємо чистий базовий URL контролера
             var baseUrl = urlBuilder.build('portmone/redirect/index', {_secure: true});
-            var redirectUrl = baseUrl + '?order_id=' + encodeURIComponent(orderId) + '&type=' + encodeURIComponent(paymentType);
+            var redirectUrl = baseUrl + '?orderId=' + encodeURIComponent(orderId) + '&paymentType=' + encodeURIComponent(paymentType);
 
             // Робимо перехід
             window.location.replace(redirectUrl);

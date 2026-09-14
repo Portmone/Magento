@@ -9,6 +9,8 @@ use PortmonePayment\Portmone\Model\DTO\Order as OrderDTO;
 
 class PaymentData implements JsonSerializable
 {
+    private string $method = '';
+
     public function __construct(
         private readonly Payee           $payee,
         private readonly OrderDTO        $orderDto,
@@ -32,7 +34,16 @@ class PaymentData implements JsonSerializable
             $result['installmentPlan'] = $this->installmentPlan;
         }
 
+        if ($this->method !== '') {
+            $result['method'] = $this->method;
+        }
+
         return $result;
+    }
+
+    public function setMethod(string $method): void
+    {
+        $this->method = $method;
     }
 }
 

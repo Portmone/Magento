@@ -23,6 +23,25 @@ class HttpClient
     {
     }
 
+    public function createLinkPayment($body): string
+    {
+        $result = $this->curlRequest($body);
+
+        if ($result['errorCode'] != '0') {
+            throw new LocalizedException(
+                new Phrase('#21P ' . (string)$result['error'])
+            );
+        }
+
+        if (empty($result['linkPayment'])) {
+            throw new LocalizedException(
+                new Phrase('#20P Помилка отримання посилання на оплату')
+            );              ;
+        }
+
+        return $result['linkPayment'];
+    }
+
     public function getPortmoneOrderData(HttpBody $body): array
     {
         $result = $this->curlRequest($body);
@@ -54,7 +73,7 @@ class HttpClient
         return $result[0];
     }
 
-    private function curlRequest(HttpBody $data): array
+    private function curlRequest($data): array
     {
         $this->curl->addHeader("Content-Type", "application/json");
 

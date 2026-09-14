@@ -35,7 +35,7 @@ class IframeSuccess
             $this->processPayment->checkAmount($order->getBaseGrandTotal(), $portmoneOrderData['billAmount']);
             $this->processPayment->checkPortmoneOrderStatus($portmoneOrderData['status']);
 
-            $order = $this->processPayment->updateOrder($order, $portmoneOrderData['status'], $shopOrderNumber);
+            $order = $this->processPayment->updateOrder($order, $portmoneOrderData['status'], $shopOrderNumber, $shopBillId);
             $this->orderRepository->save($order);
         } catch (Throwable $throwable) {
             $order->addCommentToStatusHistory(

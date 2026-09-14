@@ -97,7 +97,12 @@
 "#15P У системі Portmone.com цього платежу немає, він повернутий чи створений некоректно","#15P This payment is not found in the Portmone.com system; it has been refunded or was created incorrectly."
 "#17P Помилка при надсиланні запиту  status code: %1","#17P Error sending request; status code: %1"
 "#18P Під час здійснення оплати виникла помилка. portmone Order Status: %1'   checkPortmoneOrderStatus","#18P An error occurred during payment. Portmone Order Status: %1"
-"c","Оформити"
+"#19P Під час здійснення оплати виникла помилка. base Grand Total: %1  bill Amount: %2","#19P При оплате возникла ошибка. base Grand Total: %1 bill Amount: %2"
+"#20P Помилка отримання посилання на оплату","#20P Error retrieving payment link"
+"#22P Некоректний ідентифікатор замовлення.","#22P Invalid order ID."
+"#23P Статус цього замовлення %1 його неможливо оплатити","#23P The status of this order is %1; it cannot be paid for."
+
+"Не вдалося виконати оплату через платіжну систему Portmone.","Payment via the Portmone payment system failed."
 "Дякуємо за покупку","Thank you for your purchase."
 
 

@@ -99,6 +99,11 @@ class Payee implements JsonSerializable
         }
     }
 
+    public function getPayeeId(): string
+    {
+        return $this->payeeId;
+    }
+
     private function setKey(): void
     {
 
