@@ -29,7 +29,7 @@ class OrderSaveAfter implements ObserverInterface
 
             if ($result) {
                 $this->messageManager->addSuccessMessage(
-                    new Phrase('ВЗамовлення №%1 успішно оновлено.', [$order->getIncrementId()])
+                    new Phrase('Замовлення №%1 успішно оновлено.', [$order->getIncrementId()])
                 );
             }
         } catch (Throwable $t) {
