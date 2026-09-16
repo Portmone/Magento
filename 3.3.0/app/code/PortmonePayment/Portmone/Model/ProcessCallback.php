@@ -55,7 +55,7 @@ class ProcessCallback
                 $paymentType = PaymentType::INSTALLMENT->value;
             }
 
-            $portmoneOrderData = $this->processPayment->getPortmoneOrderData($paymentType, '', $shopBillId);
+            $portmoneOrderData = $this->processPayment->getPortmoneOrderData($paymentType, '', $shopBillId, '');
 
             $this->processPayment->checkAmount($order->getBaseGrandTotal(), $portmoneOrderData['billAmount']);
             $this->processPayment->checkPortmoneOrderStatus($portmoneOrderData['status']);

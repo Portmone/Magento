@@ -30,7 +30,7 @@ class IframeSuccess
                 );
             }
 
-            $portmoneOrderData = $this->processPayment->getPortmoneOrderData($paymentType, '', $shopBillId);
+            $portmoneOrderData = $this->processPayment->getPortmoneOrderData($paymentType, '', $shopBillId, '');
 
             $this->processPayment->checkAmount($order->getBaseGrandTotal(), $portmoneOrderData['billAmount']);
             $this->processPayment->checkPortmoneOrderStatus($portmoneOrderData['status']);

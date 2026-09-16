@@ -56,6 +56,20 @@ class HttpClient
         return $data;
     }
 
+    public function getPortmonePreauth(HttpBody $body): array
+    {
+        $result = $this->curlRequest($body);
+        $data = $this->getData($result);
+
+        if ($data['error_code'] != '0') {
+            throw new LocalizedException(
+                new Phrase('#14P ' . (string)$result['error_message'])
+            );
+        }
+
+        return $data;
+    }
+
     private function getData(array $result): array
     {
         if (count($result) == 0) {

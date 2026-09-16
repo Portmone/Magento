@@ -5,19 +5,16 @@ declare(strict_types=1);
 namespace PortmonePayment\Portmone\Model\DTO;
 
 use JsonSerializable;
-use Magento\Framework\Locale\ResolverInterface;
 
 class Payer implements JsonSerializable
 {
-    private string $lang;
-    private string $emailAddress;
-    private string $showEmail = 'Y';
+    private const string SHOW_EMAIL = 'Y';
 
     public function __construct(
-        private readonly ResolverInterface $localeResolver
+        readonly private string $lang,
+        readonly private string $emailAddress,
     )
     {
-        $this->setLang();
     }
 
     public function jsonSerialize(): array
@@ -25,24 +22,8 @@ class Payer implements JsonSerializable
         return [
             'lang' => $this->lang,
             'email' => $this->emailAddress,
-            'showEmail' => $this->showEmail,
+            'showEmail' => self::SHOW_EMAIL,
         ];
     }
-
-    public function setEmailAddress($emailAddress): void
-    {
-        $this->emailAddress = $emailAddress;
-    }
-
-    private function setLang(): void
-    {
-        $fullLocale = $this->localeResolver->getLocale(); // 'uk_UA'
-        $languageCode = strstr($fullLocale, '_', true);   // 'uk'
-
-        if (in_array($languageCode, ['ru', 'en', 'uk'])) {
-            $this->lang = $languageCode;
-        } else {
-            $this->lang = 'uk';
-        }
-    }
 }
+

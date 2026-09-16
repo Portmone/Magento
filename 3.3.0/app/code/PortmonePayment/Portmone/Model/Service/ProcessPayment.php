@@ -5,25 +5,27 @@ declare(strict_types=1);
 namespace PortmonePayment\Portmone\Model\Service;
 
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Locale\ResolverInterface;
 use Magento\Framework\Phrase;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Model\Order;
 use PortmonePayment\Portmone\Model\DTO\HttpBody;
 use PortmonePayment\Portmone\Model\DTO\ResultData;
+use PortmonePayment\Portmone\Model\Payee as PayeeModel;
 use stdClass;
 
 class ProcessPayment
 {
-    const ORDER_PAYED       = 'PAYED';
-    const ORDER_CREATED     = 'CREATED';
-    const ORDER_REJECTED    = 'REJECTED';
-    const ORDER_PREAUTH     = 'PREAUTH';
-    const ORDER_RETURN      = 'RETURN';
+    const ORDER_PAYED = 'PAYED';
+    const ORDER_CREATED = 'CREATED';
+    const ORDER_REJECTED = 'REJECTED';
+    const ORDER_PREAUTH = 'PREAUTH';
+    const ORDER_RETURN = 'RETURN';
 
     public function __construct(
-        private readonly ResultData $resultData,
-        private readonly HttpClient $httpClient,
-        private HttpBody $httpBody
+        private readonly ResolverInterface $localeResolver,
+        private readonly HttpClient        $httpClient,
+        private PayeeModel                 $payeeModel
     )
     {
     }
@@ -48,22 +50,35 @@ class ProcessPayment
 
         return $order;
     }
-    public function getPortmoneOrderData(string $paymentType, string $shopOrderNumber, string $shopBillId): array
+
+    public function getPortmoneOrderData(string $paymentType, string $shopOrderNumber, string $shopBillId, string $status): array
     {
-        $this->resultData->setPaymentType($paymentType);
-        $this->resultData->setLogin();
-        $this->resultData->setPassword();
-        $this->resultData->setPayeeId();
-        $this->resultData->setShopOrderNumber($shopOrderNumber);
-        $this->resultData->setShopBillId($shopBillId);
+        $this->payeeModel->setPaymentMode();
+        $this->payeeModel->setPaymentType($paymentType);
+        $this->payeeModel->setLogin();
+        $this->payeeModel->setPassword();
+        $this->payeeModel->setPayeeId();
+
+        $resultData = new ResultData(
+            $this->payeeModel->getPaymentType(),
+            $this->payeeModel->getLogin(),
+            $this->payeeModel->getPassword(),
+            $this->payeeModel->getPayeeId(),
+            $shopBillId,
+            $shopOrderNumber,
+            $status
+        );
+
 
         $params = new stdClass();
-        $params->data = $this->resultData;
+        $params->data = $resultData;
 
-        $this->httpBody->setMethod('result');
-        $this->httpBody->setParams($params);
+        $httpBody  = new HttpBody(
+            'result',
+            $params
+        );
 
-        return $this->httpClient->getPortmoneOrderData($this->httpBody);
+        return $this->httpClient->getPortmoneOrderData($httpBody);
     }
 
     public function checkPortmoneOrderStatus(string $portmoneOrderStatus): void
@@ -77,7 +92,7 @@ class ProcessPayment
 
     public function checkAmount($baseGrandTotal, $billAmount): void
     {
-        if (round((float) $baseGrandTotal, 2)  !== round((float) $billAmount, 2)) {
+        if (round((float)$baseGrandTotal, 2) !== round((float)$billAmount, 2)) {
             throw new LocalizedException(
                 new Phrase('#19P Під час здійснення оплати виникла помилка. base Grand Total: %1  bill Amount: %2', [$baseGrandTotal, $billAmount])
             );
@@ -96,9 +111,22 @@ class ProcessPayment
     public function getOrderId(string $shop_number): string
     {
         $shop_number_count = strpos($shop_number, "_");
-        if ( $shop_number_count === false ) {
+        if ($shop_number_count === false) {
             return $shop_number;
         }
-        return substr( $shop_number, 0, $shop_number_count );
+        return substr($shop_number, 0, $shop_number_count);
+    }
+
+    public function getLang(): string
+    {
+        $fullLocale = $this->localeResolver->getLocale(); // 'uk_UA'
+        $languageCode = strstr($fullLocale, '_', true);   // 'uk'
+
+        $lang = 'uk';
+        if (in_array($languageCode, ['ru', 'en', 'uk'])) {
+            $lang = $languageCode;
+        }
+
+        return $lang;
     }
 }

@@ -5,23 +5,17 @@ declare(strict_types=1);
 namespace PortmonePayment\Portmone\Model\DTO;
 
 use JsonSerializable;
+use stdClass;
 
 class HttpBody implements JsonSerializable
 {
-    private string $method;
-
-    private $params;
-
     private string $id = '1';
 
-    public function setMethod(string $method)
+    public function __construct(
+        readonly private string $method,
+        readonly private stdClass $params,
+    )
     {
-        $this->method = $method;
-    }
-
-    public function setParams($params)
-    {
-        $this->params = $params;
     }
 
     public function jsonSerialize(): array
