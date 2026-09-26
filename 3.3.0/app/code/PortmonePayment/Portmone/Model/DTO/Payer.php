@@ -8,7 +8,7 @@ use JsonSerializable;
 
 class Payer implements JsonSerializable
 {
-    private const string SHOW_EMAIL = 'Y';
+    private const SHOW_EMAIL = 'Y';
 
     public function __construct(
         readonly private string $lang,

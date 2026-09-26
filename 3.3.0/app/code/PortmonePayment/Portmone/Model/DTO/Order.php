@@ -15,7 +15,7 @@ use PortmonePayment\Portmone\Model\Enum\PaymentMode;
 
 class Order implements JsonSerializable
 {
-    private const string ENCODING = 'UTF-8';
+    private const ENCODING = 'UTF-8';
 
     public function __construct(
         readonly string         $paymentMode,
