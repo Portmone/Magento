@@ -19,8 +19,7 @@ class Payee
     private string $appleMerchantLabel;
     private string $signature = '';
     private string $key;
-
-    private string $password;
+    private string $password = '';
 
     public function __construct(
         private readonly ScopeConfigInterface $scopeConfig

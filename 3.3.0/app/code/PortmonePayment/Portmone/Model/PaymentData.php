@@ -52,7 +52,6 @@ class PaymentData
 
         $this->orderModel->setPaymentMode();
         $this->orderModel->setShopOrderNumber($orderId);;
-        $this->orderModel->setDescription();
         $this->orderModel->setCallbackUrl();
         $this->orderModel->setPreauthFlag();
         $this->orderModel->setExpTime();

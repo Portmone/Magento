@@ -36,7 +36,7 @@ class HttpClient
         if (empty($result['linkPayment'])) {
             throw new LocalizedException(
                 new Phrase('#20P Помилка отримання посилання на оплату')
-            );              ;
+            );
         }
 
         return $result['linkPayment'];

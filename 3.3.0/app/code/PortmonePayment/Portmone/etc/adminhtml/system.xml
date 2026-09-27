@@ -196,42 +196,42 @@
                         <field id="button_style_flag">1</field>
                     </depends>
                 </field>
-                <field id="button_width" translate="label comment" type="text" sortOrder="44" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="button_width" translate="label comment" type="text" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Ширина</label>
                     <comment>Наприклад: 150px</comment>
                     <depends>
                         <field id="button_style_flag">1</field>
                     </depends>
                 </field>
-                <field id="button_font_family" translate="label comment" type="text" sortOrder="45" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="button_font_family" translate="label comment" type="text" sortOrder="46" showInDefault="1" showInWebsite="1" showInStore="0">
                      <label>Шрифт</label>
                     <comment>Наприклад: Open Sans</comment>
                     <depends>
                         <field id="button_style_flag">1</field>
                     </depends>
                 </field>
-                <field id="button_font_size" translate="label comment" type="text" sortOrder="46" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="button_font_size" translate="label comment" type="text" sortOrder="47" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Розмір шрифту</label>
                     <comment>Наприклад: 14px</comment>
                     <depends>
                         <field id="button_style_flag">1</field>
                     </depends>
                 </field>
-                <field id="button_padding" translate="label comment" type="text" sortOrder="47" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="button_padding" translate="label comment" type="text" sortOrder="48" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Відступи</label>
                     <comment>Наприклад: 5px</comment>
                     <depends>
                         <field id="button_style_flag">1</field>
                     </depends>
                 </field>
-                <field id="button_border" translate="label comment" type="text" sortOrder="48" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="button_border" translate="label comment" type="text" sortOrder="49" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Рамка</label>
                     <comment>Наприклад: 1px solid grey</comment>
                     <depends>
                         <field id="button_style_flag">1</field>
                     </depends>
                 </field>
-                <field id="button_border_radius" translate="label comment" type="text" sortOrder="49" showInDefault="1" showInWebsite="1" showInStore="0">
+                <field id="button_border_radius" translate="label comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Заокруглення кутів</label>
                     <comment>Наприклад: 4px</comment>
                     <depends>
