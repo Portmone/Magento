@@ -79,6 +79,7 @@ class PaymentData
         $this->payeeModel->setSignature($this->orderModel->getShopOrderNumber(), $this->orderModel->getBillAmount());
         $this->payeeModel->setAppleMerchantLabel();
         $this->payeeModel->setAppleMerchantName();
+        $this->payeeModel->setCmsModuleName();
 
         $order->setData('payee_id', $this->payeeModel->getPayeeId());
         $this->orderRepository->save($order);
@@ -110,7 +111,8 @@ class PaymentData
             $this->payeeModel->getDt(),
             $this->payeeModel->getAppleMerchantName(),
             $this->payeeModel->getAppleMerchantLabel(),
-            $this->payeeModel->getSignature()
+            $this->payeeModel->getSignature(),
+            $this->payeeModel->getCmsModuleName()
         );
 
         $paymentDataDto = new PaymentDataDTO(

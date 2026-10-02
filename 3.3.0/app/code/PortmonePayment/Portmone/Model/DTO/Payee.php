@@ -17,6 +17,7 @@ class Payee implements JsonSerializable
         readonly private string $appleMerchantName = '',
         readonly private string $appleMerchantLabel = '',
         readonly private string $signature = '',
+        readonly private array $cmsModuleName = []
     )
     {
     }
@@ -28,6 +29,7 @@ class Payee implements JsonSerializable
             'login' => $this->login,
             'dt' => $this->dt,
             'signature' => $this->signature,
+            'cmsModuleName' => $this->cmsModuleName,
         ];
 
         if ($this->paymentMode === PaymentMode::IFRAME->value) {

@@ -98,7 +98,7 @@ class HttpClient
         $status = $this->curl->getStatus();
         $responseBody = $this->curl->getBody();
 
-        if ($status !== 200) {
+        if ($status !== 200 || empty($responseBody)) {
             $this->logger->critical("Portmone API cURL request failed: " . $responseBody . ' status code:' . $status);
             throw new LocalizedException(
                 new Phrase('17P Помилка при надсиланні запиту  status code: %1', [$status])

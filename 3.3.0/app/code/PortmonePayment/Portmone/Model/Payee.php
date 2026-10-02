@@ -6,6 +6,8 @@ namespace PortmonePayment\Portmone\Model;
 
 use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Module\ModuleListInterface;
+use PortmonePayment\Portmone\Model\Enum\PaymentMode;
 use PortmonePayment\Portmone\Model\Enum\PaymentType;
 
 class Payee
@@ -20,9 +22,11 @@ class Payee
     private string $signature = '';
     private string $key;
     private string $password = '';
+    private array $cmsModuleName = [];
 
     public function __construct(
-        private readonly ScopeConfigInterface $scopeConfig
+        private readonly ScopeConfigInterface $scopeConfig,
+        private ModuleListInterface $moduleList
     )
     {
     }
@@ -185,5 +189,18 @@ class Payee
     public function getPaymentType(): string
     {
         return $this->paymentType;
+    }
+
+    public function getCmsModuleName(): array
+    {
+        return $this->cmsModuleName;
+    }
+
+    public function setCmsModuleName(): void
+    {
+        $moduleVersion = $this->moduleList
+            ->getOne('PortmonePayment_Portmone')['setup_version'] ?? '';
+
+        $this->cmsModuleName = ['name' => 'Magento2', 'v' => $moduleVersion];
     }
 }
