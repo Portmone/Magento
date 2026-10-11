@@ -69,9 +69,19 @@ class OrderStatusProcessor
         }
 
         $portmoneOrdersData = $this->processPayment->getPortmoneOrderData($paymentType, $shopOrderNumber, '', 'PREAUTH');
+        foreach ($portmoneOrdersData as $portmoneOrderData) {
+            if ($portmoneOrderData['errorCode'] != '0') {
+                throw new LocalizedException(
+                    new Phrase('#33P ' . (string)$portmoneOrderData['error'])
+                );
+            }
+        }
+
+        $portmoneOrderData = $portmoneOrdersData[0];
+
         if (empty($shopBillId)) {
-            $shopBillId = $portmoneOrdersData['shopBillId'];
-        } elseif ($portmoneOrdersData['shopBillId'] != $shopBillId) {
+            $shopBillId = $portmoneOrderData['shopBillId'];
+        } elseif ($portmoneOrderData['shopBillId'] != $shopBillId) {
             throw new LocalizedException(
                 new Phrase('Некоректний shop_bill_id.')
             );
@@ -86,7 +96,7 @@ class OrderStatusProcessor
         if ($order->getStatus() == 'complete') {
             $orderAmount = $order->getGrandTotal();
 
-            if ($orderAmount > $portmoneOrdersData['billAmount']) {
+            if ($orderAmount > $portmoneOrderData['billAmount']) {
                 throw new LocalizedException(
                     new Phrase('Сума оплати не може бути більше за суму, на яку проводилась преавторизація.')
                 );

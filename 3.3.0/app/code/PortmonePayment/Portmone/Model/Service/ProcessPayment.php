@@ -90,9 +90,25 @@ class ProcessPayment
         }
     }
 
-    public function checkAmount($baseGrandTotal, $billAmount): void
+    public function getBillAmount(array $portmoneOrdersData): float
     {
-        if (round((float)$baseGrandTotal, 2) !== round((float)$billAmount, 2)) {
+        $billAmount = 0.00;
+        foreach ($portmoneOrdersData as $portmoneOrderData) {
+            if ($portmoneOrderData['errorCode'] != '0') {
+                throw new LocalizedException(
+                    new Phrase('#32P ' . (string)$portmoneOrderData['error'])
+                );
+            }
+
+            $billAmount = $billAmount + $portmoneOrderData['billAmount'];
+        }
+
+        return  round($billAmount, 2);
+    }
+
+    public function checkAmount($baseGrandTotal, float $billAmount): void
+    {
+        if (round((float)$baseGrandTotal, 2) !== $billAmount) {
             throw new LocalizedException(
                 new Phrase('#19P Під час здійснення оплати виникла помилка. base Grand Total: %1  bill Amount: %2', [$baseGrandTotal, $billAmount])
             );

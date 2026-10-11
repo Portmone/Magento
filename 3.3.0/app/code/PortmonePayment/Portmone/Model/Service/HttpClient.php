@@ -45,15 +45,20 @@ class HttpClient
     public function getPortmoneOrderData(HttpBody $body): array
     {
         $result = $this->curlRequest($body);
-        $data = $this->getData($result);
 
-        if ($data['errorCode'] != '0') {
+        if (count($result) == 0) {
             throw new LocalizedException(
-                new Phrase('#14P ' . (string)$result['error'])
+                new Phrase('#30P У системі Portmone.com цього платежу немає, він повернутий чи створений некоректно')
             );
         }
 
-        return $data;
+        if (isset($result['errorCode']) && $result['errorCode'] != '0') {
+            throw new LocalizedException(
+                new Phrase('#31P ' . (string)$result['error'])
+            );
+        }
+
+        return $result;
     }
 
     public function getPortmonePreauth(HttpBody $body): array
@@ -63,7 +68,7 @@ class HttpClient
 
         if ($data['error_code'] != '0') {
             throw new LocalizedException(
-                new Phrase('#14P ' . (string)$result['error_message'])
+                new Phrase('#14P ' . (string)$data['error_message'])
             );
         }
 

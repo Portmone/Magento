@@ -55,12 +55,15 @@ class ProcessCallback
                 $paymentType = PaymentType::INSTALLMENT->value;
             }
 
-            $portmoneOrderData = $this->processPayment->getPortmoneOrderData($paymentType, '', $shopBillId, '');
+            $portmoneOrdersData = $this->processPayment->getPortmoneOrderData($paymentType, '', $shopBillId, '');
 
-            $this->processPayment->checkAmount($order->getBaseGrandTotal(), $portmoneOrderData['billAmount']);
-            $this->processPayment->checkPortmoneOrderStatus($portmoneOrderData['status']);
+            $billAmount = $this->processPayment->getBillAmount($portmoneOrdersData);
+            $status = $portmoneOrdersData[0]['status'];
 
-            $order = $this->processPayment->updateOrder($order, $portmoneOrderData['status'], $shopOrderNumber, $shopBillId);
+            $this->processPayment->checkAmount($order->getBaseGrandTotal(), $billAmount);
+            $this->processPayment->checkPortmoneOrderStatus($status);
+
+            $order = $this->processPayment->updateOrder($order, $status, $shopOrderNumber, $shopBillId);
             $this->orderRepository->save($order);
 
             $this->checkoutSession->setLastSuccessQuoteId($order->getQuoteId());
