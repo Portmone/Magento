@@ -1,0 +1,22 @@
+<?php
+/** @var \PortmonePayment\Portmone\Block\Adminhtml\System\Config\Form\Field\Separator $block */
+
+$element = $block->getElement();
+$title = (string) $element->getLabel();
+?>
+
+<tr class="portmone-config-separator-row">
+    <td colspan="3">
+        <div class="portmone-config-separator">
+            <span class="portmone-config-separator__line"></span>
+
+            <?php if ($title !== ''): ?>
+                <span class="portmone-config-separator__title">
+                    <?= $block->escapeHtml($title) ?>
+                </span>
+            <?php endif; ?>
+
+            <span class="portmone-config-separator__line"></span>
+        </div>
+    </td>
+</tr>

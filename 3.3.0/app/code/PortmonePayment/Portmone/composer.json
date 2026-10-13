@@ -1,0 +1,18 @@
+{
+  "name": "gateon/magento2-module-payment-portmone",
+  "description": "Allows pay via Portmone",
+  "type": "magento2-module",
+  "version": "3.3.0",
+  "license": [
+    "proprietary"
+  ],
+  "require": {
+    "php": "^8.1 || ^8.2 || ^8.3",
+    "magento/magento-composer-installer": "*"
+
+  },
+  "autoload": {
+    "psr-4": { "PortmonePayment\\Portmone\\": "" },
+    "files": [ "registration.php" ]
+  }
+}

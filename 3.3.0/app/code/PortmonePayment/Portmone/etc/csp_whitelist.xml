@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<csp_whitelist xmlns:xsi="http://w3.org" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp:etc/csp_whitelist.xsd">
+    <policies>
+        <policy id="script-src">
+            <values>
+                <value id="portmone_script" type="host">*.portmone.com.ua</value>
+            </values>
+        </policy>
+        <policy id="frame-src">
+            <values>
+                <value id="portmone_frame" type="host">*.portmone.com.ua</value>
+            </values>
+        </policy>
+        <policy id="connect-src">
+            <values>
+                <value id="portmone_connect" type="host">*.portmone.com.ua</value>
+            </values>
+        </policy>
+    </policies>
+</csp_whitelist>
